@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Antigravity Navigator — 3D University Building Navigator</title>
+  <meta name="description" content="Interactive 3D navigator for university engineering faculty building with real GLB scans, A* pathfinding, and turn-by-turn directions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- ─── Sidebar ─── -->
+  <aside id="sidebar">
+    <!-- Floor Selector -->
+    <div class="panel" id="floor-panel">
+      <h2>🏢 Floor View</h2>
+      <div class="pill-group">
+        <button class="pill" data-floor="1">First Floor</button>
+        <button class="pill" data-floor="2">Second Floor</button>
+        <button class="pill active" data-floor="all">All Floors</button>
+      </div>
+    </div>
+
+    <!-- Route Selection -->
+    <div class="panel" id="route-panel">
+      <h2>🧭 Route Planner</h2>
+      <div class="select-group">
+        <label for="sel-start">
+          <span class="select-dot start-dot"></span> From
+        </label>
+        <select id="sel-start"><option value="">— Select start —</option></select>
+      </div>
+      <div class="select-group">
+        <label for="sel-end">
+          <span class="select-dot end-dot"></span> To
+        </label>
+        <select id="sel-end"><option value="">— Select destination —</option></select>
+      </div>
+      <div class="btn-group">
+        <button id="btn-find" disabled>
+          <span class="btn-icon">⚡</span> Find Route
+        </button>
+        <button id="btn-reset" class="secondary">Reset</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="panel" id="stats-panel">
+      <h2>📊 Path Statistics</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="stat-explored">—</span>
+          <span class="stat-label">Explored</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-distance">—</span>
+          <span class="stat-label">Distance</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-time">—</span>
+          <span class="stat-label">Time</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-floors">—</span>
+          <span class="stat-label">Floors</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Directions -->
+    <div class="panel" id="dir-panel">
+      <h2>📍 Directions</h2>
+      <div id="directions">
+        <p class="placeholder-text">Select start & destination to get directions</p>
+      </div>
+    </div>
+
+    <!-- View Controls -->
+    <div class="panel compact" id="view-panel">
+      <h2>🎮 View Controls</h2>
+      <div class="view-controls">
+        <button id="btn-orbit" class="view-btn active" title="Orbit View">🌐 Orbit</button>
+        <button id="btn-top" class="view-btn" title="Top-Down View">📐 Top</button>
+        <button id="btn-walk" class="view-btn" title="First Person">🚶 Walk</button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <kbd>LMB</kbd> Orbit &nbsp; <kbd>RMB</kbd> Pan &nbsp; <kbd>Scroll</kbd> Zoom<br/>
+      <span>© 2026 Antigravity Project</span>
+    </div>
+  </aside>
+
+  <!-- ─── 3D Viewport ─── -->
+  <main id="viewport">
+    <div id="loading-overlay">
+      <div class="loader-container">
+        <div class="loader-ring"></div>
+        <div class="loader-text">Loading 3D Scan...</div>
+        <div class="loader-progress" id="load-progress">0%</div>
+      </div>
+    </div>
+    <canvas id="minimap"></canvas>
+    <div id="room-tooltip"></div>
+    <div id="floor-indicator">
+      <span id="floor-label">All Floors</span>
+    </div>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
